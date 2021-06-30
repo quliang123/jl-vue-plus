@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jl.system.mapper.ActivityRecordMapper">
+    <resultMap type="com.jl.system.domain.ActivityRecord" id="ActivityRecordResultMap">
+        <result property="arId" column="ar_id"/>
+        <result property="donateNumber" column="donate_number"/>
+        <result property="activityId" column="activity_id"/>
+        <result property="alumnaId" column="alumna_id"/>
+        <result property="amount" column="amount"/>
+        <result property="donateTime" column="donate_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="activityIdentityType" column="activity_identity_type"/>
+        <result property="activityTypeName" column="activity_type_name"/>
+        <association property="activity" column="activity_id" javaType="com.jl.system.domain.Activity"
+                     resultMap="ActivityResult"/>
+
+        <association property="alumna" column="alumna_id" javaType="com.jl.system.domain.Alumna"
+                     resultMap="AlumnaResult"/>
+    </resultMap>
+    <resultMap type="com.jl.system.domain.ActivityRecord" id="ActivityRecordResult">
+        <result property="arId" column="ar_id"/>
+        <result property="donateNumber" column="donate_number"/>
+        <result property="activityId" column="activity_id"/>
+        <result property="alumnaId" column="alumna_id"/>
+        <result property="amount" column="amount"/>
+        <result property="donateTime" column="donate_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="activityIdentityType" column="activity_identity_type"/>
+        <result property="activityTypeName" column="activity_type_name"/>
+        <association property="activity" column="activity_id" javaType="com.jl.system.domain.Activity"
+                     resultMap="ActivityResult"/>
+
+        <association property="alumna" column="alumna_id" javaType="com.jl.system.domain.Alumna"
+                     resultMap="AlumnaResult"/>
+    </resultMap>
+
+
+    <resultMap type="com.jl.system.domain.Activity" id="ActivityResult">
+        <result property="activityName" column="activity_name"/>
+        <result property="activityType" column="activity_type"/>
+        <result property="activityStatus" column="activity_status"/>
+        <result property="dueDate" column="due_date"/>
+    </resultMap>
+
+    <resultMap id="AlumnaResult" type="com.jl.system.domain.Alumna">
+        <result property="idfNo" column="idf_no"/>
+        <result property="identity" column="identity"/>
+        <result property="name" column="name"/>
+        <result property="idCard" column="id_card"/>
+        <result property="mobile" column="mobile"/>
+        <result property="position" column="position"/>
+    </resultMap>
+
+    <insert id="insertActivityRecord" parameterType="com.jl.system.domain.ActivityRecord" keyProperty="arId"
+            useGeneratedKeys="true" >
+        insert into activity_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="donateNumber != null">donate_number,</if>
+            <if test="activityId != null">activity_id,</if>
+            <if test="alumnaId != null">alumna_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="foundationId != null">foundation_id,</if>
+            <if test="amount != null">amount,</if>
+            <if test="donateTime != null">donate_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="donateNumber != null">#{donateNumber,jdbcType=VARCHAR},</if>
+            <if test="activityId != null">#{activityId,jdbcType=BIGINT},</if>
+            <if test="alumnaId != null">#{alumnaId,jdbcType=BIGINT},</if>
+            <if test="userId != null">#{userId,jdbcType=BIGINT},</if>
+            <if test="foundationId != null">#{foundationId,jdbcType=BIGINT},</if>
+            <if test="amount != null">#{amount,jdbcType=VARCHAR},</if>
+            <if test="donateTime != null">#{donateTime,jdbcType=VARCHAR},</if>
+            <if test="createTime != null">#{createTime,jdbcType=VARCHAR},</if>
+            <if test="updateTime != null">#{updateTime,jdbcType=VARCHAR},</if>
+            <if test="createBy != null">#{createBy,jdbcType=VARCHAR},</if>
+            <if test="updateBy != null">#{updateBy,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <!--    <insert id="insertActivityRecord" parameterType="com.jl.system.domain.ActivityRecord" keyProperty="arId" useGeneratedKeys="true">-->
+    <!--                insert into activity_record(-->
+    <!--                 donate_number,-->
+    <!--                activity_id,-->
+    <!--                alumna_id,-->
+    <!--                user_id,-->
+    <!--                foundation_id,-->
+    <!--                amount,-->
+    <!--                donate_time,-->
+    <!--                create_time,-->
+    <!--                update_time,-->
+    <!--                create_by,-->
+    <!--                update_by,-->
+    <!--                )values (-->
+    <!--                #{donateNumber,jdbcType=VARCHAR},-->
+    <!--                #{activityId,jdbcType=BIGINT},-->
+    <!--                #{alumnaId,jdbcType=BIGINT},-->
+    <!--                #{userId,jdbcType=BIGINT},-->
+    <!--                #{foundationId,jdbcType=BIGINT},-->
+    <!--                #{amount,jdbcType=VARCHAR},-->
+    <!--                #{donateTime,jdbcType=VARCHAR},-->
+    <!--                #{createTime,jdbcType=VARCHAR},-->
+    <!--                #{updateTime,jdbcType=VARCHAR},-->
+    <!--                #{createBy,jdbcType=VARCHAR},-->
+    <!--                #{updateBy,jdbcType=VARCHAR}-->
+    <!--                )-->
+    <!--            </insert>-->
+
+    <select id="selectActivityRecordVo" parameterType="com.jl.system.domain.bo.ActivityRecordQueryBo"
+            resultMap="ActivityRecordResult">
+        select ar.donate_number , ar.amount, ar.donate_time, a.activity_name, a.activity_type, a.activity_status,
+        a.due_date ,
+        al.idf_no, al.identity, al.name , al.id_card, al.mobile, al.position
+        from activity_record ar
+        left join activity a on a.activity_id = ar.activity_id
+        left join alumna al on al.alumna_id = ar.alumna_id
+        <where>
+            <if test="bo.activityId !=null and bo.activityId !=''">
+                and ar.activity_id = #{bo.activityId}
+            </if>
+            <if test="bo.activityName != null and bo.activityName != ''">and a.activity_name like
+                concat('%',#{bo.activityName},'%')
+            </if>
+            <if test="bo.name != null and bo.name != ''">and al.name like concat('%',#{bo.name},'%')</if>
+            <if test="bo.donateTime != null and bo.dueDate != null">
+                a.due_date &lt;=
+                #{bo.dueDate}
+                and ar.donate_time &gt;=
+                #{bo.donateTime}
+            </if>
+        </where>
+    </select>
+    <select id="countDistinct" resultType="java.lang.Integer">
+                select count(distinct alumna_id) FROM activity_record
+            </select>
+
+    <select id="get7DayActivityRecord" resultMap="ActivityRecordResult">
+                SELECT donate_time,(@var := @var + amount) amount FROM (
+                    SELECT DATE_FORMAT(donate_time,'%Y-%m-%d')donate_time ,SUM(amount) amount
+                    FROM activity_record where   donate_time > date_add(now(),interval -7 day)
+                    GROUP BY DATE_FORMAT(donate_time,'%Y-%m-%d')
+                )a,(SELECT @var := 0) b
+            </select>
+    <select id="get6MonthActivityRecord" resultType="com.jl.system.domain.ActivityRecord">
+                SELECT donate_time,(@var := @var + amount) amount FROM (
+                    SELECT DATE_FORMAT(donate_time,'%Y-%m-%d')donate_time ,SUM(amount) amount
+                    FROM activity_record where   donate_time > date_add(now(),interval -6 MONTH)
+                    GROUP BY DATE_FORMAT(donate_time,'%Y-%m-%d')
+                )a,(SELECT @var := 0) b
+
+            </select>
+    <select id="getYearActivityRecord" resultType="com.jl.system.domain.ActivityRecord">
+                SELECT donate_time,(@var := @var + amount) amount FROM (
+                    SELECT DATE_FORMAT(donate_time,'%Y-%m-%d')donate_time ,SUM(amount) amount
+                    FROM activity_record
+                    GROUP BY DATE_FORMAT(donate_time,'%Y-%m-%d')
+                )a,(SELECT @var := 0) b
+            </select>
+    <select id="getTotalActivityAmount" resultType="java.lang.Integer">
+                select SUM(amount) FROM activity_record
+            </select>
+    <select id="getActivityRecordList" parameterType="com.jl.system.domain.bo.ActivityRecordQueryBo"
+            resultMap="ActivityRecordResult">
+        SELECT ar.donate_number,ay.activity_name,d1.dict_label activity_identity_type,
+        d2.dict_label activity_type_name,al.idf_no,al.name,al.mobile,al.id_card,
+        ar.amount,ar.donate_time
+        from activity_record ar
+        LEFT JOIN activity ay ON ar.activity_id = ay.activity_id
+        LEFT JOIN alumna al ON ar.alumna_id = al.alumna_id
+        LEFT JOIN sys_dict_data d1 ON ay.activity_type = d1.dict_value
+        LEFT JOIN sys_dict_data d2 ON ay.activity_type = d2.dict_value
+        <where>
+            and d1.dict_type="sys_alumni_identity"
+            and d2.dict_type="sys_activity_type"
+            <if test="bo.activityName != null and bo.activityName != ''">and a.activity_name like
+                concat('%',#{activityName},'%')
+            </if>
+            <if test="bo.name != null and bo.name != ''">and al.name like concat('%',#{name},'%')</if>
+            <if test="bo.donateTime != null and bo.dueDate != null">and date_format(a.due_date,'%Y-%m-%d') &lt;=
+                date_format(#{bo.dueDate},'%Y-%m-%d') and date_format(ar.donate_time) &gt;=
+                date_format(#{bo.donateTime},'%Y-%m-%d')
+            </if>
+        </where>
+    </select>
+    <select id="getCurrentUserJoinProject" resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT ar.activity_id) FROM activity_record ar
+        <where>
+            <if test="bo.alumnaId!=null and bo.alumnaId!=''">
+                and ar.alumna_id=#{bo.alumnaId}
+            </if>
+            <if test="bo.userId!=null and bo.userId!=''">
+                and ar.user_id=#{bo.userId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

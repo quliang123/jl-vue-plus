@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jl.system.mapper.CertificateMapper">
+
+    <resultMap id="CertificateMap" type="com.jl.system.domain.Certificate">
+        <result column="certificate_id" property="certificateId"/>
+        <result column="certificate_number" property="certificateNumber"/>
+
+        <association property="activity" column="activity_id" javaType="com.jl.system.domain.Activity"
+                     resultMap="ActivityResult"/>
+        <association property="activityRecord" column="ar_id" javaType="com.jl.system.domain.ActivityRecord"
+                     resultMap="ActivityRecordResult"/>
+    </resultMap>
+    <resultMap id="ActivityResult" type="com.jl.system.domain.Activity">
+        <result property="activityId" column="activity_id"/>
+        <result property="activityName" column="activity_name"/>
+        <result property="activityType" column="activity_type"/>
+        <result property="activityStatus" column="activity_status"/>
+        <result property="dueDate" column="due_date"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="setUp" column="set_up"/>
+        <result property="logo" column="logo"/>
+        <result property="description" column="description"/>
+        <result property="details" column="details"/>
+    </resultMap>
+    <resultMap type="com.jl.system.domain.ActivityRecord" id="ActivityRecordResult">
+        <result property="arId" column="ar_id"/>
+        <result property="donateNumber" column="donate_number"/>
+        <result property="activityId" column="activity_id"/>
+        <result property="alumnaId" column="alumna_id"/>
+        <result property="amount" column="amount"/>
+        <result property="donateTime" column="donate_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="activityIdentityType" column="activity_identity_type"/>
+        <result property="activityTypeName" column="activity_type_name"/>
+    </resultMap>
+    <resultMap id="FoundationResult" type="com.jl.system.domain.Foundation">
+        <result column="" property="foundationId" />
+        <result column="foundation_name" property="foundationName"/>
+    </resultMap>
+
+    <select id="getCertificateList" resultMap="CertificateMap">
+        SELECT ay.activity_id,ar.amount,ay.activity_name,
+        cf.certificate_number,cf.certificate_id,ar.donate_time,
+        ay.logo,ar.donate_time,ar.ar_id from activity ay
+        LEFT JOIN activity_record ar ON ay.activity_id = ar.activity_id
+        LEFT JOIN certificate cf on cf.ar_id = ar.ar_id
+        <where>
+            <if test="bo.alumnaId!=null and bo.alumnaId!=''">
+                and ar.alumna_id=#{bo.alumnaId}
+            </if>
+            <if test="bo.userId!=null and bo.userId!=''">
+                and cf.user_id =#{bo.userId}
+            </if>
+        </where>
+    </select>
+    <select id="getCertificateDetails" resultMap="CertificateMap" >
+        SELECT cc.certificate_number,ar.amount,ar.donate_time,ay.activity_name,
+            fd.foundation_name from certificate cc
+            LEFT JOIN activity_record ar on ar.ar_id = cc.ar_id
+            LEFT JOIN activity ay on ay.activity_id= ar.activity_id
+            LEFT JOIN foundation fd on fd.foundation_id = cc.foundation_id
+            <where>
+                <if test="bo.certificateId!=null and bo.certificateId!=''">
+                    and cc.certificate_id =#{bo.certificateId}
+                </if>
+            </where>
+    </select>
+</mapper>

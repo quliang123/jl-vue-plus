@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jl.system.mapper.ActivityMapper">
+        <resultMap type="com.jl.system.domain.Activity" id="ActivityResult">
+            <result property="activityId" column="activity_id"/>
+            <result property="activityName" column="activity_name"/>
+            <result property="activityType" column="activity_type"/>
+            <result property="activityStatus" column="activity_status"/>
+            <result property="dueDate" column="due_date"/>
+            <result property="createTime" column="create_time"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="createBy" column="create_by"/>
+            <result property="updateBy" column="update_by"/>
+            <result property="setUp" column="set_up"/>
+            <result property="logo" column="logo"/>
+            <result property="description" column="description"/>
+            <result property="details" column="details"/>
+        </resultMap>
+        <resultMap id="ActivityMap" type="com.jl.system.domain.Activity">
+            <result property="activityId" column="activity_id"/>
+            <result property="activityName" column="activity_name"/>
+            <result property="activityType" column="activity_type"/>
+            <result property="activityStatus" column="activity_status"/>
+            <result property="dueDate" column="due_date"/>
+            <result property="createTime" column="create_time"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="createBy" column="create_by"/>
+            <result property="updateBy" column="update_by"/>
+            <result property="setUp" column="set_up"/>
+            <result property="logo" column="logo"/>
+            <result property="description" column="description"/>
+            <result property="details" column="details"/>
+        </resultMap>
+
+        <resultMap id="ActivityResultList" type="com.jl.system.domain.Activity">
+            <result property="activityId" column="activity_id"/>
+            <result property="activityName" column="activity_name"/>
+            <result property="activityType" column="activity_type"/>
+            <result property="activityStatus" column="activity_status"/>
+            <result property="dueDate" column="due_date"/>
+            <result property="createTime" column="create_time"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="createBy" column="create_by"/>
+            <result property="updateBy" column="update_by"/>
+            <result property="setUp" column="set_up"/>
+            <result property="logo" column="logo"/>
+            <result property="description" column="description"/>
+            <result property="details" column="details"/>
+            <association property="activityRecord" column="activity_id" resultMap="ActivityRecordResult"
+                        javaType="com.jl.system.domain.ActivityRecord">
+            </association>
+
+
+        </resultMap>
+
+        <resultMap type="com.jl.system.domain.Activity" id="ActivityResultMap">
+            <result property="activityId" column="activity_id"/>
+            <result property="activityName" column="activity_name"/>
+            <result property="activityType" column="activity_type"/>
+            <result property="activityStatus" column="activity_status"/>
+            <result property="dueDate" column="due_date"/>
+            <result property="createTime" column="create_time"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="createBy" column="create_by"/>
+            <result property="updateBy" column="update_by"/>
+            <result property="setUp" column="set_up"/>
+            <result property="logo" column="logo"/>
+            <result property="description" column="description"/>
+            <result property="details" column="details"/>
+
+            <collection property="activityRecord" column="activity_id" resultMap="ActivityRecordResult"
+                        javaType="com.jl.system.domain.ActivityRecord">
+            </collection>
+
+            <collection property="alumna" column="alumna_id" resultMap="AlumnaResult"
+                        javaType="com.jl.system.domain.Alumna">
+            </collection>
+        </resultMap>
+
+        <resultMap type="com.jl.system.domain.Alumna" id="AlumnaResult">
+            <result property="alumnaId" column="alumna_id"/>
+            <result property="idfNo" column="idf_no"/>
+            <result property="identity" column="identity"/>
+            <result property="name" column="name"/>
+            <result property="gender" column="gender"/>
+            <result property="idCard" column="id_card"/>
+            <result property="birthday" column="birthday"/>
+            <result property="graduateTime" column="graduate_time"/>
+            <result property="mobile" column="mobile"/>
+            <result property="nickName" column="nick_name"/>
+            <result property="address" column="address"/>
+            <result property="email" column="email"/>
+            <result property="qq" column="qq"/>
+            <result property="industry" column="industry"/>
+            <result property="itwork" column="itwork"/>
+            <result property="dept" column="dept"/>
+            <result property="company" column="company"/>
+            <result property="university" column="university"/>
+            <result property="position" column="position"/>
+            <result property="profession" column="profession"/>
+            <result property="education" column="education"/>
+            <result property="createTime" column="create_time"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="createBy" column="create_by"/>
+            <result property="updateBy" column="update_by"/>
+        </resultMap>
+
+        <resultMap type="com.jl.system.domain.ActivityRecord" id="ActivityRecordResult">
+            <result property="arId" column="ar_id"/>
+            <result property="donateNumber" column="donate_number"/>
+            <result property="activityId" column="activity_id"/>
+            <result property="alumnaId" column="alumna_id"/>
+            <result property="amount" column="amount"/>
+            <result property="donateTime" column="donate_time"/>
+            <result property="createTime" column="create_time"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="createBy" column="create_by"/>
+            <result property="updateBy" column="update_by"/>
+            <result property="activityIdentityType" column="activity_identity_type"/>
+            <result property="activityTypeName" column="activity_type_name"/>
+        </resultMap>
+
+
+
+    <select id="getDoneStaffByActivityId" resultMap="ActivityMap">
+            SELECT al.*,ur.* from activity ay
+            LEFT JOIN activity_record ar ON ay.activity_id=ar.activity_id
+            LEFT JOIN alumna al ON ar.alumna_id = al.alumna_id
+            LEFT JOIN `user` ur ON al.user_id=ur.user_id
+            <where>
+                <if test="bo.activityId!=null and bo.activityId!=''">
+                    and ay.activity_id=#{bo.activityId}
+                </if>
+                limit #{bo.pageNum},#{bo.pageSize}
+            </where>
+        </select>
+        <select id="getActivityRecordBySelectType" resultType="com.jl.system.domain.Activity">
+            SELECT ay.activity_id,ay.activity_name,ay.logo,IFNULL(SUM(ar.amount), 0.0) totalAmount,
+            COUNT(ar.ar_id) totalDonateCount,dd.dict_label activityState,ar.donate_time
+            FROM activity_record ar
+            LEFT JOIN activity ay ON ar.activity_id = ay.activity_id
+            LEFT JOIN sys_dict_data dd on dd.dict_type="sys_activity_status"
+               <where>
+                   dd.dict_value = ay.activity_status
+                   <if test="bo.alumnaId!=null and bo.alumnaId!=''">
+                         AND ar.alumna_id=#{bo.alumnaId}
+                   </if>
+                   <if test="bo.userId!=null and bo.userId!=''">
+                       AND ar.user_id=#{bo.userId}
+                   </if>
+               </where>
+                <choose>
+                    <when test="bo.selectType!=null and bo.selectType==0">
+                        GROUP BY ay.activity_id
+                    </when>
+                    <otherwise>
+                        GROUP BY ar.donate_time
+                    </otherwise>
+                </choose>
+        </select>
+    <select id="getCurrentUserTotalAmount" resultType="java.lang.Integer">
+        SELECT SUM(amount) FROM activity_record ar
+        <where>
+            <if test="bo.alumnaId!=null and bo.alumnaId!=''">
+                and ar.alumna_id=#{bo.alumnaId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getActivityList" resultMap="ActivityMap">
+        SELECT * FROM activity t
+            INNER JOIN (
+                select ay.activity_id from activity ay
+                        LEFT JOIN sys_dict_data dd on dd.dict_type="sys_activity_status"
+                <where>
+                        dd.dict_value=ay.activity_status
+                    <if test="bo.activityName != null and bo.activityName != ''">
+                        and ay.activity_name like concat('%',#{bo.activityName},'%')
+                    </if>
+                    <if test="bo.activityType !=null and bo.activityType !=''">
+                        and ay.activity_type =#{bo.activityType}
+                    </if>
+                    <if test="bo.activityStatus !=null and bo.activityStatus !=''">
+                        and ay.activity_status =#{bo.activityStatus}
+                    </if>
+                        GROUP BY ay.activity_id
+                 </where>
+            ) t1 ON t.activity_id = t1.activity_id
+    </select>
+
+    <resultMap type="com.jl.system.domain.Activity" id="ActivityFoundationMap">
+        <result property="activityId" column="activity_id"/>
+        <result property="activityName" column="activity_name"/>
+        <result property="activityType" column="activity_type"/>
+        <result property="activityStatus" column="activity_status"/>
+        <result property="dueDate" column="due_date"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="setUp" column="set_up"/>
+        <result property="logo" column="logo"/>
+        <result property="description" column="description"/>
+        <result property="details" column="details"/>
+
+        <association property="foundation" column="activity_id" resultMap="FoundationResult"
+                     javaType="com.jl.system.domain.ActivityRecord">
+        </association>
+    </resultMap>
+
+</mapper>

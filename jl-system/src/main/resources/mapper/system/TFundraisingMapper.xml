@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jl.system.mapper.TFundraisingMapper">
+
+    <resultMap type="com.jl.system.domain.TFundraising" id="TFundraisingResult">
+        <result property="fdrId" column="fdr_id"/>
+        <result property="fdrName" column="fdr_name"/>
+        <result property="fdrType" column="fdr_type"/>
+        <result property="fdrStatus" column="fdr_status"/>
+        <result property="fdrFinishTime" column="fdr_finish_time"/>
+        <result property="fdrAutoPush" column="fdr_auto_push"/>
+        <result property="fdrAutoFailure" column="fdr_auto_failure"/>
+        <result property="fdrPics" column="fdr_pics"/>
+        <result property="fdrInfo" column="fdr_info"/>
+        <result property="fdrContent" column="fdr_content"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+
+</mapper>
